@@ -8,7 +8,7 @@ import '../../providers/meals_provider.dart';
 import '../meal_detail/meal_detail_screen.dart';
 
 class ExploreScreen extends ConsumerWidget {
-  const ExploreScreen({Key? key}) : super(key: key);
+  const ExploreScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,12 +21,11 @@ class ExploreScreen extends ConsumerWidget {
         : ref.watch(searchMealsProvider(searchQuery));
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFFF8F4),
+      backgroundColor: AppTheme.darkBackground,
       appBar: AppBar(
-        title: const Text('Explore Recipes', style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.white,
+        title: const Text('Explore Recipes', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+        backgroundColor: AppTheme.darkBackground,
         elevation: 0,
-        scrolledUnderElevation: 0,
       ),
       body: Column(
         children: [
@@ -34,6 +33,7 @@ class ExploreScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: TextField(
+              style: const TextStyle(color: Colors.white),
               onChanged: (value) {
                 if (value.isNotEmpty) {
                   ref.read(selectedCategoryProvider.notifier).state = null;
@@ -42,12 +42,13 @@ class ExploreScreen extends ConsumerWidget {
               },
               decoration: InputDecoration(
                 hintText: 'Search recipes...',
-                prefixIcon: const Icon(Icons.search),
+                hintStyle: const TextStyle(color: AppTheme.textSecondary),
+                prefixIcon: const Icon(Icons.search, color: AppTheme.textSecondary),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: AppTheme.darkInputFill,
                 suffixIcon: searchQuery.isNotEmpty
                     ? IconButton(
-                        icon: const Icon(Icons.clear),
+                        icon: const Icon(Icons.clear, color: Colors.white),
                         onPressed: () {
                           ref.read(searchQueryProvider.notifier).state = '';
                         },
@@ -55,7 +56,7 @@ class ExploreScreen extends ConsumerWidget {
                     : null,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
+                  borderSide: const BorderSide(color: AppTheme.darkBorderColor),
                 ),
               ),
             ),
@@ -86,15 +87,15 @@ class ExploreScreen extends ConsumerWidget {
                           ref.read(selectedCategoryProvider.notifier).state = null;
                         }
                       },
-                      selectedColor: AppTheme.primaryColor.withOpacity(0.2),
-                      checkmarkColor: AppTheme.primaryColor,
+                      selectedColor: AppTheme.primaryBlue,
+                      checkmarkColor: Colors.white,
                       labelStyle: TextStyle(
-                        color: isSelected ? AppTheme.primaryColor : Colors.black,
+                        color: Colors.white,
                         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                       ),
-                      backgroundColor: Colors.white,
+                      backgroundColor: AppTheme.darkInputFill,
                       side: BorderSide(
-                        color: isSelected ? AppTheme.primaryColor : Colors.grey.shade300,
+                        color: isSelected ? AppTheme.primaryBlue : AppTheme.darkBorderColor,
                       ),
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                     ),
@@ -111,19 +112,19 @@ class ExploreScreen extends ConsumerWidget {
           // Meals List
           Expanded(
             child: (searchQuery.isEmpty && selectedCategory == null)
-                ? Center(
+                ? const Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
                           Icons.restaurant_menu,
                           size: 80,
-                          color: Colors.grey.shade300,
+                          color: AppTheme.textSecondary,
                         ),
-                        const SizedBox(height: 16),
-                        const Text(
+                        SizedBox(height: 16),
+                        Text(
                           'Search or select a category',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          style: TextStyle(color: AppTheme.textSecondary, fontSize: 16),
                         ),
                       ],
                     ),
@@ -132,7 +133,7 @@ class ExploreScreen extends ConsumerWidget {
                     data: (meals) {
                       if (meals.isEmpty) {
                         return const Center(
-                          child: Text('No recipes found'),
+                          child: Text('No recipes found', style: TextStyle(color: AppTheme.textSecondary)),
                         );
                       }
                       return ListView.builder(
@@ -140,39 +141,46 @@ class ExploreScreen extends ConsumerWidget {
                         itemCount: meals.length,
                         itemBuilder: (context, index) {
                           final meal = meals[index];
-                          return Card(
+                          return Container(
                             margin: const EdgeInsets.only(bottom: 12),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                            decoration: BoxDecoration(
+                              color: AppTheme.darkCardSurface,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: AppTheme.darkBorderColor),
+                            ),
                             child: ListTile(
                               contentPadding: const EdgeInsets.all(8),
                               leading: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: CachedNetworkImage(
                                   imageUrl: meal.thumbnail,
-                                  httpHeaders: AppConstants.headers,
+                                  httpHeaders: AppConstants.getHeadersForUrl(meal.thumbnail),
                                   width: 60,
                                   height: 60,
                                   fit: BoxFit.cover,
                                   placeholder: (context, url) => Container(
                                     width: 60,
                                     height: 60,
-                                    color: Colors.grey.shade200,
+                                    color: AppTheme.darkInputFill,
                                     child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
                                   ),
                                   errorWidget: (context, url, error) => Container(
                                     width: 60,
                                     height: 60,
-                                    color: Colors.grey.shade200,
-                                    child: const Icon(Icons.image, color: Colors.grey),
+                                    color: AppTheme.darkInputFill,
+                                    child: const Icon(Icons.image, color: AppTheme.textSecondary),
                                   ),
                                 ),
                               ),
                               title: Text(
                                 meal.name,
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
                               ),
-                              subtitle: Text('${meal.category} • ${meal.area}'),
-                              trailing: const Icon(Icons.chevron_right),
+                              subtitle: Text(
+                                '${meal.category} • ${meal.area}',
+                                style: const TextStyle(color: AppTheme.textSecondary),
+                              ),
+                              trailing: const Icon(Icons.chevron_right, color: Colors.white),
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -186,8 +194,8 @@ class ExploreScreen extends ConsumerWidget {
                         },
                       );
                     },
-                    loading: () => const Center(child: CircularProgressIndicator()),
-                    error: (error, stackTrace) => Center(child: Text('Error: $error')),
+                    loading: () => const Center(child: CircularProgressIndicator(color: AppTheme.brandGold)),
+                    error: (error, stackTrace) => Center(child: Text('Error: $error', style: const TextStyle(color: AppTheme.errorRed))),
                   ),
           ),
         ],

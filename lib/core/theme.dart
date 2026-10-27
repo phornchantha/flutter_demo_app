@@ -1,101 +1,67 @@
 import 'package:flutter/material.dart';
 
 class AppTheme {
-  // Primary Colors
-  static const Color primaryColor = Color(0xFF6F4E37); // Brown
-  static const Color secondaryColor = Color(0xFFD4A574); // Light Brown
-  static const Color accentColor = Color(0xFFFFB84D); // Orange
+  // Brand Colors matching "Cooking" design
+  static const Color darkBackground = Color(0xFF121212);
+  static const Color darkCardSurface = Color(0xFF1E1E22);
+  static const Color darkInputFill = Color(0xFF27272A);
+  static const Color darkBorderColor = Color(0xFF3F3F46);
 
-  // Neutral Colors
-  static const Color backgroundColor = Color(0xFFFAF9F6);
-  static const Color surfaceColor = Color(0xFFFFFFFF);
-  static const Color textColor = Color(0xFF2C2C2C);
-  static const Color textSecondaryColor = Color(0xFF666666);
-  static const Color borderColor = Color(0xFFE0E0E0);
+  // Accent Colors
+  static const Color brandGold = Color(0xFFD97706); // Orange-Gold Chef Badge
+  static const Color brandGoldBackground = Color(0xFF3D2005);
+  static const Color primaryBlue = Color(0xFF0284C7); // Add to shopping list blue
+  static const Color pillWhite = Color(0xFFF4F4F5);
 
   // Status Colors
-  static const Color successColor = Color(0xFF4CAF50);
-  static const Color errorColor = Color(0xFFFF6B6B);
-  static const Color warningColor = Color(0xFFFFA500);
+  static const Color successGreen = Color(0xFF22C55E);
+  static const Color errorRed = Color(0xFFEF4444);
+  static const Color textSecondary = Color(0xFFA1A1AA);
 
-  // Text Styles
-  static const TextStyle headingLarge = TextStyle(
-    fontSize: 32,
-    fontWeight: FontWeight.bold,
-    color: textColor,
-  );
-
-  static const TextStyle headingMedium = TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.bold,
-    color: textColor,
-  );
-
-  static const TextStyle headingSmall = TextStyle(
-    fontSize: 18,
-    fontWeight: FontWeight.w600,
-    color: textColor,
-  );
-
-  static const TextStyle bodyLarge = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.normal,
-    color: textColor,
-  );
-
-  static const TextStyle bodyMedium = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.normal,
-    color: textSecondaryColor,
-  );
-
-  static const TextStyle bodySmall = TextStyle(
-    fontSize: 12,
-    fontWeight: FontWeight.normal,
-    color: textSecondaryColor,
-  );
-
-  // Theme Data
-  static ThemeData get lightTheme {
+  static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: primaryColor,
-        brightness: Brightness.light,
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: darkBackground,
+      colorScheme: const ColorScheme.dark(
+        primary: brandGold,
+        secondary: primaryBlue,
+        surface: darkCardSurface,
+        background: darkBackground,
+        error: errorRed,
       ),
-      scaffoldBackgroundColor: backgroundColor,
       appBarTheme: const AppBarTheme(
-        backgroundColor: primaryColor,
+        backgroundColor: darkBackground,
         foregroundColor: Colors.white,
         elevation: 0,
-      ),
-      floatingActionButtonTheme: const FloatingActionButtonThemeData(
-        backgroundColor: accentColor,
-        foregroundColor: Colors.white,
-      ),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColor,
-          foregroundColor: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        ),
+        centerTitle: false,
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white,
+        fillColor: darkInputFill,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: borderColor),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: darkBorderColor),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: borderColor),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: darkBorderColor),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: primaryColor, width: 2),
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: brandGold, width: 1.5),
         ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: errorRed, width: 1.5),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: errorRed, width: 1.5),
+        ),
+        hintStyle: const TextStyle(color: textSecondary, fontSize: 14),
+        labelStyle: const TextStyle(color: textSecondary),
       ),
     );
   }

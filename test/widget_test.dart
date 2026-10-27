@@ -7,11 +7,11 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(
       const ProviderScope(
-        child: MyApp(seenOnboarding: false),
+        child: MyApp(),
       ),
     );
 
-    // Verify that onboarding is shown when seenOnboarding is false.
-    expect(find.text('Get Started'), findsOneWidget);
+    // Verify that the Cooking title is shown on Splash screen.
+    expect(find.text('Cooking'), findsOneWidget);
   });
 }
